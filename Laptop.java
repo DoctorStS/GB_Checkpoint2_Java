@@ -3,15 +3,15 @@ import java.util.Objects;
 public class Laptop {
     private int id;
     private String brand;
-    private float ram;
-    private float hdd;
+    private double ram;
+    private double hdd;
     private String cpu;
     private String opSys;
     private String color;
     private int price;
 
     public Laptop(
-            int id, String brand, float ram, float hdd, String cpu, String opSys, String color, int price) {
+            int id, String brand, double ram, double hdd, String cpu, String opSys, String color, int price) {
         this.id = id;
         this.brand = brand;
         this.ram = ram;
@@ -30,11 +30,11 @@ public class Laptop {
         return brand;
     }
 
-    public float getRam() {
+    public double getRam() {
         return ram;
     }
 
-    public float getHdd() {
+    public double getHdd() {
         return hdd;
     }
 
@@ -62,11 +62,11 @@ public class Laptop {
         this.brand = brand;
     }
 
-    public void setRam(float ram) {
+    public void setRam(double ram) {
         this.ram = ram;
     }
 
-    public void setHdd(float hdd) {
+    public void setHdd(double hdd) {
         this.hdd = hdd;
     }
 
@@ -84,5 +84,34 @@ public class Laptop {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "ID: %d, Brand: %s, RAM: %.1f GB, HDD: %.1f TB, CPU: %s, Operating System: %s, Color: %s, Price: %d USD",
+                id, brand, ram, hdd, cpu, opSys, color, price);
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Laptop lap = (Laptop) obj;
+        return id == lap.id
+                && brand.equals(lap.brand)
+                && ram == lap.ram
+                && hdd == lap.hdd
+                && color.equals(lap.color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, brand, ram, hdd, color);
     }
 }
