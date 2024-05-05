@@ -1,4 +1,9 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
 
 public class Laptop {
     private int id;
@@ -8,10 +13,11 @@ public class Laptop {
     private String cpu;
     private String opSys;
     private String color;
-    private int price;
+    private double price;
+    private Map<String, Object> filterCriteria;
 
     public Laptop(
-            int id, String brand, double ram, double hdd, String cpu, String opSys, String color, int price) {
+            int id, String brand, double ram, double hdd, String cpu, String opSys, String color, double price) {
         this.id = id;
         this.brand = brand;
         this.ram = ram;
@@ -50,7 +56,7 @@ public class Laptop {
         return color;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -82,7 +88,7 @@ public class Laptop {
         this.color = color;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -113,5 +119,76 @@ public class Laptop {
     @Override
     public int hashCode() {
         return Objects.hash(id, brand, ram, hdd, color);
+    }
+
+    public Set<Laptop> filterLaptops(Set<Laptop> laptops, Map<String, Object> filterCriteria) {
+        Set<Laptop> filteredLaptops = new HashSet<>();
+        for (Laptop laptop : laptops) {
+            boolean matchesCriteria = true;
+            for (Map.Entry<String, Object> entry : filterCriteria.entrySet()) {
+                String fieldName = entry.getKey();
+                Object expectedValue = entry.getValue();
+                Object actualValue = getFieldValue(laptop, fieldName);
+                if (!actualValue.equals(expectedValue)) {
+                    matchesCriteria = false;
+                    break;
+                }
+            }
+            if (matchesCriteria) {
+                filteredLaptops.add(laptop);
+            }
+        }
+        return filteredLaptops;
+    }
+
+    public static Map<String, Object> getFilterCriteria() {
+        Map<String, Object> filterCriteria = new HashMap<>();
+        Scanner scanner = new Scanner(System.in);
+        String choiceFilterKeyName = "";
+        int choiceFilterKeyNum = 0;
+        while (choiceFilterKeyNum < 1 || choiceFilterKeyNum > 4) {
+            System.out.print("Введите цифру, соответствующую необходимому критерию отсеивания:\r\n" +
+                    "1 - ОЗУ\r\n" +
+                    "2 - Объём ЖД\r\n" +
+                    "3 - Цвет\r\n" +
+                    "4 - Цена в долларах\r\n");
+            choiceFilterKeyNum = scanner.nextInt();
+            switch (choiceFilterKeyNum) {
+                case 1:
+                    choiceFilterKeyName = "ram";
+                    break;
+                case 2:
+                    choiceFilterKeyName = "hdd";
+                    break;
+                case 3:
+                    choiceFilterKeyName = "color";
+                    break;
+                case 4:
+                    choiceFilterKeyName = "price";
+                    break;
+                default:
+                    System.out.print("Введите только цифру, соответствующую критерию!");
+                    continue;
+            }
+        }
+        System.out.print(String.format("Введите минимальные значения для %s: ", choiceFilterKeyName));
+        Object choiceFilterValue = null;
+        if (scanner.hasNextDouble()) {
+            choiceFilterValue = scanner.nextDouble();
+        } else {
+            if (choiceFilterKeyName.equals("color")) {
+                choiceFilterValue = scanner.next();
+            } else {
+                System.out.println("Выбранный вами критерий должен быть описан минимальным значением числа!");
+            }
+        }
+        scanner.close();
+        filterCriteria.put(choiceFilterKeyName, choiceFilterValue);
+        return filterCriteria;
+    }
+
+    public static Object getFieldValue(Laptop lpt, String fieldName) {
+        // не знаю пока нужен ли этот метод
+        return Object;
     }
 }

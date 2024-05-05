@@ -1,6 +1,5 @@
 /*
  *
--Создать множество ноутбуков.
 -Написать метод, который будет запрашивать у пользователя критерий (или критерии)
 фильтрации и выведет ноутбуки, отвечающие фильтру. Критерии фильтрации можно
 хранить в Map. Например:
@@ -16,7 +15,9 @@
  */
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class MainLaptop {
@@ -28,5 +29,9 @@ public class MainLaptop {
         for (Laptop lpt : laptops) {
             System.out.println(lpt);
         }
+
+        Map<String, Object> filterCriteria = new HashMap<>();
+        filterCriteria = laptops.getFilterCriteria();
+        Set<Laptop> filteredLaptops = filterLaptops(laptops, filterCriteria);
     }
 }
