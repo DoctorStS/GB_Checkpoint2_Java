@@ -14,7 +14,6 @@ public class Laptop {
     private String opSys;
     private String color;
     private double price;
-    private Map<String, Object> filterCriteria;
 
     public Laptop(
             int id, String brand, double ram, double hdd, String cpu, String opSys, String color, double price) {
@@ -95,9 +94,8 @@ public class Laptop {
     @Override
     public String toString() {
         return String.format(
-                "ID: %d, Brand: %s, RAM: %.1f GB, HDD: %.1f TB, CPU: %s, Operating System: %s, Color: %s, Price: %d USD",
+                "ID: %d, Brand: %s, RAM: %.1f GB, HDD: %.1f TB, CPU: %s, Operating System: %s, Color: %s, Price: %f USD",
                 id, brand, ram, hdd, cpu, opSys, color, price);
-
     }
 
     @Override
@@ -121,7 +119,7 @@ public class Laptop {
         return Objects.hash(id, brand, ram, hdd, color);
     }
 
-    public Set<Laptop> filterLaptops(Set<Laptop> laptops, Map<String, Object> filterCriteria) {
+    public static Set<Laptop> filterLaptops(Set<Laptop> laptops, Map<String, Object> filterCriteria) {
         Set<Laptop> filteredLaptops = new HashSet<>();
         for (Laptop laptop : laptops) {
             boolean matchesCriteria = true;
@@ -188,7 +186,17 @@ public class Laptop {
     }
 
     public static Object getFieldValue(Laptop lpt, String fieldName) {
-        // не знаю пока нужен ли этот метод
-        return Object;
+        switch (fieldName) {
+            case "ram":
+                return lpt.getRam();
+            case "hdd":
+                return lpt.getHdd();
+            case "color":
+                return lpt.getColor();
+            case "price":
+                return lpt.getPrice();
+            default:
+                return null;
+        }
     }
 }

@@ -30,8 +30,10 @@ public class MainLaptop {
             System.out.println(lpt);
         }
 
-        Map<String, Object> filterCriteria = new HashMap<>();
-        filterCriteria = laptops.getFilterCriteria();
-        Set<Laptop> filteredLaptops = filterLaptops(laptops, filterCriteria);
+        Map<String, Object> filterCriteria = Laptop.getFilterCriteria();
+        Set<Laptop> filteredLaptops = Laptop.filterLaptops(laptops, filterCriteria);
+        for (Laptop lpt : filteredLaptops) {
+            System.out.println(lpt);
+        }
     }
 }
