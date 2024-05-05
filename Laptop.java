@@ -118,7 +118,12 @@ public class Laptop {
     public int hashCode() {
         return Objects.hash(id, brand, ram, hdd, color);
     }
-
+/**
+ * Filters laptops set by user's criteria
+ * @param laptops set
+ * @param filterCriteria map
+ * @return Filtered laptops set
+ */
     public static Set<Laptop> filterLaptops(Set<Laptop> laptops, Map<String, Object> filterCriteria) {
         Set<Laptop> filteredLaptops = new HashSet<>();
         for (Laptop laptop : laptops) {
@@ -127,7 +132,13 @@ public class Laptop {
                 String fieldName = entry.getKey();
                 Object expectedValue = entry.getValue();
                 Object actualValue = getFieldValue(laptop, fieldName);
-                if (!actualValue.equals(expectedValue)) {
+                if (expectedValue instanceof Double && actualValue instanceof Double) {
+                    if ((Double) actualValue < (Double) expectedValue) {
+                        matchesCriteria = false;
+                        break;
+                    }
+                } else if (expectedValue instanceof String && actualValue instanceof String
+                        && !actualValue.equals(expectedValue)) {
                     matchesCriteria = false;
                     break;
                 }
@@ -138,7 +149,10 @@ public class Laptop {
         }
         return filteredLaptops;
     }
-
+/**
+ * Gets filters from user input and makes a map
+ * @return Filter Criteria map
+ */
     public static Map<String, Object> getFilterCriteria() {
         Map<String, Object> filterCriteria = new HashMap<>();
         Scanner scanner = new Scanner(System.in);
@@ -184,7 +198,12 @@ public class Laptop {
         filterCriteria.put(choiceFilterKeyName, choiceFilterValue);
         return filterCriteria;
     }
-
+/**
+ * Gets a real field value from an object
+ * @param laptop object
+ * @param fieldName for it
+ * @return field value as object
+ */
     public static Object getFieldValue(Laptop lpt, String fieldName) {
         switch (fieldName) {
             case "ram":
